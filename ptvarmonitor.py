@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
 import matplotlib as plt
+import glob
+from dataclasses import dataclass
+
 
 class VarMonitor(object):
     def __init__(self, *args, **kawgs):
@@ -10,13 +13,13 @@ class VarMonitor(object):
             self.config = kawgs["config_dir"]
         else:
             self.config = "config"
-    def read_config_files(self, file):
-        data = pd.read_csv('{config}/{file}'.format(config=self.config, file=file), delimiter=',')
-        print(data)
-
+    def read_config_files(self, config):
+        for file in glob.glob('{config}/*.config'.format(config=config)):
+            data = pd.read_csv('{file}'.format(file=file), delimiter=',')
+            print(data)
+@dataclass
 class PyStruct(object):
-    def __init__(self, *args, **kawgs):
-        self.name = kawgs["name"]
-        self.epics_name = kawgs["epics_name"]
-        self.upper_bound = kawgs["upper_bound"]
-        self.lower_bound = kawgs["lower_bound"]
+        name: str
+        epics_name: str
+        upper_bound: float
+        lower_bound: float
