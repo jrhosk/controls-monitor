@@ -12,7 +12,8 @@ class Chaldea(object):
 
 
     def send_message(self, message):
+        """Connects to smtp server to send notification, alarms, and analysis reports."""
         context = ssl.create_default_context()
         with smtplib.SMTP_SSL(self.smtp_server, self.port, context=context) as self.server:
-            self.server.login(self.sender, '')
+            self.server.login(self.sender, '') #Enter password here
             self.server.sendmail(self.sender, self.recipient, message)
